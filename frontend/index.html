@@ -33,6 +33,24 @@
           <span class="status-pill"><span aria-hidden="true"></span>Walking</span>
         </div>
         <div class="map-area">
+          <form id="route-form" class="route-controls">
+            <label>
+              <span>Start</span>
+              <select id="route-start" name="start" required disabled>
+                <option value="">Choose a starting place</option>
+              </select>
+            </label>
+            <label>
+              <span>Destination</span>
+              <select id="route-end" name="destination" required disabled>
+                <option value="">Choose a destination</option>
+              </select>
+            </label>
+            <button id="route-submit" type="submit" disabled>Find route</button>
+          </form>
+          <p id="route-result" class="route-result" role="status" aria-live="polite">
+            Choose a start and destination to plan a walk.
+          </p>
           <p id="map-status" class="map-status" role="status" aria-live="polite">
             Loading campus locations and roads…
           </p>
@@ -43,14 +61,22 @@
                   orient="auto" markerUnits="userSpaceOnUse">
                 <path d="M 0 0 L 8 4 L 0 8 z" class="arrowhead"></path>
               </marker>
+              <marker id="route-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4"
+                  orient="auto" markerUnits="userSpaceOnUse">
+                <path d="M 0 0 L 8 4 L 0 8 z" class="route-arrowhead"></path>
+              </marker>
             </defs>
             <g id="road-layer"></g>
+            <g id="route-layer"></g>
             <g id="location-layer"></g>
           </svg>
           <div class="map-legend" aria-label="Map legend">
             <span><i class="legend-road" aria-hidden="true"></i>Road connection</span>
             <span><i class="legend-one-way" aria-hidden="true"></i>One-way walk</span>
+            <span><i class="legend-route" aria-hidden="true"></i>Shortest route</span>
             <span><i class="legend-place" aria-hidden="true"></i>Location</span>
+            <span><i class="legend-start" aria-hidden="true"></i>Start</span>
+            <span><i class="legend-end" aria-hidden="true"></i>Destination</span>
           </div>
         </div>
       </section>

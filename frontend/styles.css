@@ -189,6 +189,71 @@ h2 {
   padding: 1.25rem 1.5rem 1.1rem;
 }
 
+.route-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.route-controls label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.route-controls select,
+.route-controls button {
+  min-height: 2.65rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+
+.route-controls button {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.route-controls button:disabled,
+.route-controls select:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.route-result {
+  min-height: 1.25rem;
+  margin: 0 0 0.6rem;
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.route-result[data-state="error"] {
+  color: #a33e32;
+}
+
+.road-edge.route-edge {
+  stroke: #2b61cb;
+  stroke-width: 5;
+}
+
+.map-place.route-start .map-node {
+  fill: #d57a35;
+}
+
+.map-place.route-end .map-node {
+  fill: #248552;
+}
+
 .map-status {
   min-height: 1.25rem;
   margin: 0 0 0.7rem;
@@ -226,6 +291,10 @@ h2 {
   fill: #527d68;
 }
 
+.route-arrowhead {
+  fill: #2b61cb;
+}
+
 .map-node {
   fill: var(--green);
   stroke: white;
@@ -253,9 +322,14 @@ h2 {
 }
 
 .legend-road,
-.legend-one-way {
+.legend-one-way,
+.legend-route {
   width: 1.15rem;
   border-top: 2px solid #bdcbc3;
+}
+
+.legend-route {
+  border-top: 4px solid #2b61cb;
 }
 
 .legend-one-way {
@@ -275,14 +349,28 @@ h2 {
   content: "";
 }
 
-.legend-place {
+.legend-place,
+.legend-start,
+.legend-end {
   width: 0.6rem;
   height: 0.6rem;
   border: 2px solid white;
   border-radius: 50%;
-  background: var(--green);
   box-shadow: 0 0 0 1px var(--line);
 }
+
+.legend-place {
+  background: var(--green);
+}
+
+.legend-start {
+  background: #d57a35;
+}
+
+.legend-end {
+  background: #248552;
+}
+
 
 .page-note {
   margin: 1.2rem 0 0;
@@ -309,5 +397,9 @@ h2 {
 
   .map-canvas {
     min-height: 230px;
+  }
+
+  .route-controls {
+    grid-template-columns: 1fr;
   }
 }
