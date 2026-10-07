@@ -185,55 +185,103 @@ h2 {
   background: #4c9a71;
 }
 
-.workspace-body {
-  display: grid;
-  min-height: 300px;
-  align-content: center;
-  justify-items: center;
-  padding: 2.5rem 1.5rem;
-  background-image: radial-gradient(#dbe5df 0.8px, transparent 0.8px);
-  background-position: center;
-  background-size: 19px 19px;
-  text-align: center;
+.map-area {
+  padding: 1.25rem 1.5rem 1.1rem;
 }
 
-.empty-state-mark {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.35rem;
-}
-
-.dot {
-  width: 0.85rem;
-  height: 0.85rem;
-  border: 3px solid white;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--line);
-}
-
-.dot-start {
-  background: #d57a35;
-}
-
-.dot-end {
-  background: var(--green);
-}
-
-.route-line {
-  width: 4rem;
-  border-top: 2px dashed #99b5a7;
-}
-
-.empty-title {
-  margin-bottom: 0.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.empty-copy {
-  margin-bottom: 0;
+.map-status {
+  min-height: 1.25rem;
+  margin: 0 0 0.7rem;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+}
+
+.map-status[data-state="error"] {
+  color: #a33e32;
+}
+
+.map-canvas {
+  display: block;
+  width: 100%;
+  min-height: 280px;
+  border: 1px solid #e2eae5;
+  border-radius: 0.75rem;
+  background-color: #f8faf8;
+  background-image: radial-gradient(#dbe5df 0.8px, transparent 0.8px);
+  background-size: 19px 19px;
+}
+
+.road-edge {
+  stroke: #bdcbc3;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.road-edge.one-way {
+  stroke: #789d8b;
+  stroke-width: 2.1;
+}
+
+.arrowhead {
+  fill: #527d68;
+}
+
+.map-node {
+  fill: var(--green);
+  stroke: white;
+  stroke-width: 2.5;
+}
+
+.map-node-title {
+  fill: var(--ink);
+  font-size: 12px;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  padding-top: 0.9rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-road,
+.legend-one-way {
+  width: 1.15rem;
+  border-top: 2px solid #bdcbc3;
+}
+
+.legend-one-way {
+  position: relative;
+  border-color: #789d8b;
+}
+
+.legend-one-way::after {
+  position: absolute;
+  top: -4px;
+  right: -1px;
+  width: 0;
+  height: 0;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 5px solid #527d68;
+  content: "";
+}
+
+.legend-place {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 1px var(--line);
 }
 
 .page-note {
@@ -255,7 +303,11 @@ h2 {
     padding: 1.2rem;
   }
 
-  .workspace-body {
-    min-height: 250px;
+  .map-area {
+    padding: 1rem;
+  }
+
+  .map-canvas {
+    min-height: 230px;
   }
 }
