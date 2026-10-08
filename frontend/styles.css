@@ -216,12 +216,23 @@ h2 {
   font: inherit;
 }
 
+.route-actions {
+  display: flex;
+  gap: 0.55rem;
+}
+
 .route-controls button {
   border-color: var(--green);
   background: var(--green);
   color: white;
   font-weight: 650;
   cursor: pointer;
+}
+
+.route-controls .clear-route {
+  border-color: var(--line);
+  background: white;
+  color: var(--muted);
 }
 
 .route-controls button:disabled,
@@ -448,6 +459,11 @@ h2 {
 
   .route-controls {
     grid-template-columns: 1fr;
+  }
+
+  .route-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .route-stop {

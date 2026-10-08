@@ -46,7 +46,10 @@
                 <option value="">Choose a destination</option>
               </select>
             </label>
-            <button id="route-submit" type="submit" disabled>Find route</button>
+            <div class="route-actions">
+              <button id="route-submit" type="submit" disabled>Find route</button>
+              <button id="route-clear" class="clear-route" type="button">Clear</button>
+            </div>
           </form>
           <p id="route-result" class="route-result" role="status" aria-live="polite">
             Choose a start and destination to plan a walk.

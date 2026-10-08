@@ -1,6 +1,7 @@
 import { parseCsv } from './csv.mjs';
 import { shortestWalk } from './routing.mjs';
 import { buildRouteStops } from './route-stops.mjs';
+import { clearRouteControls, routeFeedback } from './route-ui.mjs';
 
 const roadLayer = document.querySelector('#road-layer');
 const routeLayer = document.querySelector('#route-layer');
@@ -12,6 +13,7 @@ const routeForm = document.querySelector('#route-form');
 const startSelect = document.querySelector('#route-start');
 const endSelect = document.querySelector('#route-end');
 const submitButton = document.querySelector('#route-submit');
+const clearButton = document.querySelector('#route-clear');
 const svgNamespace = 'http://www.w3.org/2000/svg';
 const width = 1000;
 const height = 560;
@@ -168,14 +170,17 @@ function renderStops(route) {
 }
 
 function showRoute(startId, endId) {
+  const startName = points.get(startId).name;
+  const endName = points.get(endId).name;
   const route = shortestWalk([...points.values()], roads, startId, endId);
   clearRoute();
-  result.removeAttribute('data-state');
-  if (!route) {
+  const feedback = routeFeedback(route, startName, endName);
+  result.textContent = feedback.text;
+  if (feedback.state === 'error') {
     result.dataset.state = 'error';
-    result.textContent = `No walking route connects ${points.get(startId).name} and ${points.get(endId).name}.`;
     return;
   }
+  result.removeAttribute('data-state');
 
   for (let index = 1; index < route.locationIds.length; index++) {
     const from = points.get(route.locationIds[index - 1]);
@@ -193,9 +198,15 @@ function showRoute(startId, endId) {
 
   markerById.get(startId).classList.add('route-start');
   markerById.get(endId).classList.add('route-end');
-  result.textContent = `Shortest walk · ${route.distanceMiles.toFixed(2)} miles`;
   renderStops(route);
 }
+
+clearButton.addEventListener('click', () => {
+  clearRouteControls(startSelect, endSelect);
+  clearRoute();
+  result.removeAttribute('data-state');
+  result.textContent = 'Choose a start and destination to plan a walk.';
+});
 
 routeForm.addEventListener('submit', event => {
   event.preventDefault();
