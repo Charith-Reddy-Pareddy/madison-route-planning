@@ -215,17 +215,23 @@ for (const select of [startSelect, endSelect]) {
   });
 }
 
+async function loadCsv(file) {
+  for (const path of [`../data/${file}`, `data/${file}`]) {
+    try {
+      const response = await fetch(new URL(path, import.meta.url));
+      if (response.ok) return response.text();
+    } catch {
+      // Try the other layout before reporting a load error.
+    }
+  }
+  throw new Error(`Could not load data/${file}.`);
+}
+
 async function loadNetwork() {
   try {
-    const [locationsResponse, roadsResponse] = await Promise.all([
-      fetch('../data/locations.csv'),
-      fetch('../data/roads.csv')
-    ]);
-    if (!locationsResponse.ok || !roadsResponse.ok) {
-      throw new Error('Could not load the campus location and road data.');
-    }
     const [locationsText, roadsText] = await Promise.all([
-      locationsResponse.text(), roadsResponse.text()
+      loadCsv('locations.csv'),
+      loadCsv('roads.csv')
     ]);
     drawNetwork(parseCsv(locationsText), parseCsv(roadsText));
   } catch (error) {
