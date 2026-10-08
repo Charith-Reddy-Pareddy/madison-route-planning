@@ -1,5 +1,6 @@
 import { parseCsv } from './csv.mjs';
 import { shortestWalk } from './routing.mjs';
+import { buildRouteStops } from './route-stops.mjs';
 
 const roadLayer = document.querySelector('#road-layer');
 const routeLayer = document.querySelector('#route-layer');
@@ -147,19 +148,8 @@ function clearRoute() {
   }
 }
 
-function roadMiles(fromId, toId) {
-  return Math.min(...roads
-    .filter(road => road.from === fromId && road.to === toId)
-    .map(road => Number(road.walkMiles)));
-}
-
 function renderStops(route) {
-  let distanceFromStart = 0;
-  const lastIndex = route.locationIds.length - 1;
-  route.locationIds.forEach((id, index) => {
-    if (index > 0) {
-      distanceFromStart += roadMiles(route.locationIds[index - 1], id);
-    }
+  for (const [index, stop] of buildRouteStops(route.locationIds, [...points.values()], roads).entries()) {
     const item = document.createElement('li');
     item.className = 'route-stop';
     const number = document.createElement('span');
@@ -167,21 +157,13 @@ function renderStops(route) {
     number.textContent = String(index + 1);
     const name = document.createElement('span');
     name.className = 'stop-name';
-    name.textContent = points.get(id).name;
+    name.textContent = stop.name;
     const note = document.createElement('span');
     note.className = 'stop-note';
-    if (lastIndex === 0) {
-      note.textContent = 'Start and destination';
-    } else if (index === 0) {
-      note.textContent = 'Start';
-    } else if (index === lastIndex) {
-      note.textContent = `Destination · ${distanceFromStart.toFixed(2)} miles total`;
-    } else {
-      note.textContent = `${distanceFromStart.toFixed(2)} miles from start`;
-    }
+    note.textContent = stop.note;
     item.append(number, name, note);
     routeStops.append(item);
-  });
+  }
   routeStops.hidden = false;
 }
 
