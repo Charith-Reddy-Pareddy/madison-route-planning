@@ -254,6 +254,53 @@ h2 {
   fill: #248552;
 }
 
+.route-stops {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.route-stops[hidden] {
+  display: none;
+}
+
+.route-stop {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  background: #fff;
+}
+
+.stop-number {
+  display: grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stop-name {
+  min-width: 0;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.stop-note {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
 .map-status {
   min-height: 1.25rem;
   margin: 0 0 0.7rem;
@@ -401,5 +448,14 @@ h2 {
 
   .route-controls {
     grid-template-columns: 1fr;
+  }
+
+  .route-stop {
+    grid-template-columns: 1.8rem minmax(0, 1fr);
+  }
+
+  .stop-note {
+    grid-column: 2;
+    text-align: left;
   }
 }

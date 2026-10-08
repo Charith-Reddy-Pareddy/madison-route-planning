@@ -6,6 +6,7 @@ const routeLayer = document.querySelector('#route-layer');
 const locationLayer = document.querySelector('#location-layer');
 const status = document.querySelector('#map-status');
 const result = document.querySelector('#route-result');
+const routeStops = document.querySelector('#route-stops');
 const routeForm = document.querySelector('#route-form');
 const startSelect = document.querySelector('#route-start');
 const endSelect = document.querySelector('#route-end');
@@ -139,9 +140,49 @@ function drawNetwork(locations, roadRows) {
 
 function clearRoute() {
   routeLayer.replaceChildren();
+  routeStops.replaceChildren();
+  routeStops.hidden = true;
   for (const marker of markerById.values()) {
     marker.classList.remove('route-start', 'route-end');
   }
+}
+
+function roadMiles(fromId, toId) {
+  return Math.min(...roads
+    .filter(road => road.from === fromId && road.to === toId)
+    .map(road => Number(road.walkMiles)));
+}
+
+function renderStops(route) {
+  let distanceFromStart = 0;
+  const lastIndex = route.locationIds.length - 1;
+  route.locationIds.forEach((id, index) => {
+    if (index > 0) {
+      distanceFromStart += roadMiles(route.locationIds[index - 1], id);
+    }
+    const item = document.createElement('li');
+    item.className = 'route-stop';
+    const number = document.createElement('span');
+    number.className = 'stop-number';
+    number.textContent = String(index + 1);
+    const name = document.createElement('span');
+    name.className = 'stop-name';
+    name.textContent = points.get(id).name;
+    const note = document.createElement('span');
+    note.className = 'stop-note';
+    if (lastIndex === 0) {
+      note.textContent = 'Start and destination';
+    } else if (index === 0) {
+      note.textContent = 'Start';
+    } else if (index === lastIndex) {
+      note.textContent = `Destination · ${distanceFromStart.toFixed(2)} miles total`;
+    } else {
+      note.textContent = `${distanceFromStart.toFixed(2)} miles from start`;
+    }
+    item.append(number, name, note);
+    routeStops.append(item);
+  });
+  routeStops.hidden = false;
 }
 
 function showRoute(startId, endId) {
@@ -170,8 +211,8 @@ function showRoute(startId, endId) {
 
   markerById.get(startId).classList.add('route-start');
   markerById.get(endId).classList.add('route-end');
-  const names = route.locationIds.map(id => points.get(id).name);
-  result.textContent = `${names.join(' → ')} · ${route.distanceMiles.toFixed(2)} miles`;
+  result.textContent = `Shortest walk · ${route.distanceMiles.toFixed(2)} miles`;
+  renderStops(route);
 }
 
 routeForm.addEventListener('submit', event => {
