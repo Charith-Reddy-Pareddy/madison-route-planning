@@ -1,7 +1,12 @@
 import { parseCsv } from './csv.mjs';
 import { shortestWalk } from './routing.mjs';
 import { buildRouteStops } from './route-stops.mjs';
-import { clearRouteControls, routeFeedback } from './route-ui.mjs';
+import {
+  clearRouteControls,
+  clearRouteDirections,
+  routeFeedback,
+  showRouteDirections
+} from './route-ui.mjs';
 
 const roadLayer = document.querySelector('#road-layer');
 const routeLayer = document.querySelector('#route-layer');
@@ -144,8 +149,7 @@ function drawNetwork(locations, roadRows) {
 
 function clearRoute() {
   routeLayer.replaceChildren();
-  routeStops.replaceChildren();
-  routeDirections.hidden = true;
+  clearRouteDirections(routeDirections, routeStops);
   for (const marker of markerById.values()) {
     marker.classList.remove('route-start', 'route-end');
   }
@@ -167,7 +171,7 @@ function renderStops(route) {
     item.append(number, name, note);
     routeStops.append(item);
   }
-  routeDirections.hidden = false;
+  showRouteDirections(routeDirections);
 }
 
 function showRoute(startId, endId) {

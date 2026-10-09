@@ -14,3 +14,14 @@ export function clearRouteControls(start, end) {
   start.value = '';
   end.value = '';
 }
+
+/** Clear the route stops and hide their directions section. */
+export function clearRouteDirections(section, stops) {
+  stops.replaceChildren();
+  section.hidden = true;
+}
+
+/** Show the directions section after its route stops have been rendered. */
+export function showRouteDirections(section) {
+  section.hidden = false;
+}
