@@ -9,6 +9,7 @@ const locationLayer = document.querySelector('#location-layer');
 const status = document.querySelector('#map-status');
 const result = document.querySelector('#route-result');
 const routeStops = document.querySelector('#route-stops');
+const routeDirections = document.querySelector('#route-directions');
 const routeForm = document.querySelector('#route-form');
 const startSelect = document.querySelector('#route-start');
 const endSelect = document.querySelector('#route-end');
@@ -144,7 +145,7 @@ function drawNetwork(locations, roadRows) {
 function clearRoute() {
   routeLayer.replaceChildren();
   routeStops.replaceChildren();
-  routeStops.hidden = true;
+  routeDirections.hidden = true;
   for (const marker of markerById.values()) {
     marker.classList.remove('route-start', 'route-end');
   }
@@ -166,7 +167,7 @@ function renderStops(route) {
     item.append(number, name, note);
     routeStops.append(item);
   }
-  routeStops.hidden = false;
+  routeDirections.hidden = false;
 }
 
 function showRoute(startId, endId) {

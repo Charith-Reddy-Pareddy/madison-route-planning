@@ -235,6 +235,11 @@ h2 {
   color: var(--muted);
 }
 
+.route-controls :is(select, button):focus-visible {
+  outline: 3px solid #92b8ff;
+  outline-offset: 2px;
+}
+
 .route-controls button:disabled,
 .route-controls select:disabled {
   cursor: not-allowed;
@@ -265,16 +270,26 @@ h2 {
   fill: #248552;
 }
 
+.route-directions {
+  margin-top: 0.9rem;
+}
+
+.route-directions[hidden] {
+  display: none;
+}
+
+.route-directions h3 {
+  margin: 0 0 0.55rem;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+}
+
 .route-stops {
   display: grid;
   gap: 0.45rem;
-  margin: 0.9rem 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.route-stops[hidden] {
-  display: none;
 }
 
 .route-stop {
@@ -302,6 +317,7 @@ h2 {
 
 .stop-name {
   min-width: 0;
+  overflow-wrap: anywhere;
   font-size: 0.85rem;
   font-weight: 650;
 }
