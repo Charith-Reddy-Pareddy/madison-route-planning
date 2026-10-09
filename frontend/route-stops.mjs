@@ -1,5 +1,5 @@
 /** Build readable stop labels and cumulative distances for a walking route. */
-export function buildRouteStops(locationIds, locations, roads) {
+export function buildRouteStops(locationIds, locations, roads, distanceField = 'walkMiles') {
   if (locationIds.length === 0) {
     throw new Error('A route must contain at least one location.');
   }
@@ -15,7 +15,7 @@ export function buildRouteStops(locationIds, locations, roads) {
       const fromId = locationIds[index - 1];
       const distances = roads
         .filter(road => road.from === fromId && road.to === id)
-        .map(road => Number(road.walkMiles))
+        .map(road => Number(road[distanceField]))
         .filter(miles => Number.isFinite(miles) && miles >= 0);
       if (distances.length === 0) {
         throw new Error(`Route has no walking distance from '${fromId}' to '${id}'.`);

@@ -221,6 +221,50 @@ h2 {
   gap: 0.55rem;
 }
 
+.route-preferences {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  margin: 0;
+  padding: 0.85rem 1rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+}
+
+.route-preferences legend {
+  padding: 0 0.35rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.route-preferences label > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--ink);
+}
+
+.route-preferences output {
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+.route-preferences input[type="range"] {
+  width: 100%;
+  margin: 0.45rem 0 0;
+  accent-color: var(--green);
+}
+
+#route-preferences-help {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
 .route-controls button {
   border-color: var(--green);
   background: var(--green);
@@ -235,7 +279,7 @@ h2 {
   color: var(--muted);
 }
 
-.route-controls :is(select, button):focus-visible {
+.route-controls :is(select, button, input):focus-visible {
   outline: 3px solid #92b8ff;
   outline-offset: 2px;
 }
@@ -474,6 +518,10 @@ h2 {
   }
 
   .route-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .route-preferences {
     grid-template-columns: 1fr;
   }
 

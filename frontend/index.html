@@ -50,6 +50,24 @@
               <button id="route-submit" type="submit" disabled>Find route</button>
               <button id="route-clear" class="clear-route" type="button">Clear</button>
             </div>
+            <fieldset class="route-preferences" aria-describedby="route-preferences-help">
+              <legend>Route preferences</legend>
+              <label for="distance-weight">
+                <span>Distance <output id="distance-weight-value" for="distance-weight">100%</output></span>
+                <input id="distance-weight" type="range" min="0" max="100" value="100">
+              </label>
+              <label for="time-weight">
+                <span>Estimated time <output id="time-weight-value" for="time-weight">0%</output></span>
+                <input id="time-weight" type="range" min="0" max="100" value="0">
+              </label>
+              <label for="accessibility-weight">
+                <span>Accessibility <output id="accessibility-weight-value" for="accessibility-weight">0%</output></span>
+                <input id="accessibility-weight" type="range" min="0" max="100" value="0">
+              </label>
+              <p id="route-preferences-help">
+                Preferences combine by their relative weights; if all are 0%, distance is used. Time assumes a 3 mph walk and adds 30 seconds for each road with stairs. Roads without a mapped accessible route are penalized, and excluded at 100% accessibility.
+              </p>
+            </fieldset>
           </form>
           <p id="route-result" class="route-result" role="status" aria-live="polite">
             Choose a start and destination to plan a walk.

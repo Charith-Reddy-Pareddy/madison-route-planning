@@ -1,9 +1,11 @@
 import { parseCsv } from './csv.mjs';
-import { shortestWalk } from './routing.mjs';
+import { weightedWalk } from './routing.mjs';
 import { buildRouteStops } from './route-stops.mjs';
 import {
   clearRouteControls,
   clearRouteDirections,
+  bindRoutePreferences,
+  readRoutePreferences,
   routeFeedback,
   showRouteDirections
 } from './route-ui.mjs';
@@ -20,6 +22,16 @@ const startSelect = document.querySelector('#route-start');
 const endSelect = document.querySelector('#route-end');
 const submitButton = document.querySelector('#route-submit');
 const clearButton = document.querySelector('#route-clear');
+const weightInputs = {
+  distance: document.querySelector('#distance-weight'),
+  time: document.querySelector('#time-weight'),
+  accessibility: document.querySelector('#accessibility-weight')
+};
+const weightValues = {
+  distance: document.querySelector('#distance-weight-value'),
+  time: document.querySelector('#time-weight-value'),
+  accessibility: document.querySelector('#accessibility-weight-value')
+};
 const svgNamespace = 'http://www.w3.org/2000/svg';
 const width = 1000;
 const height = 560;
@@ -155,8 +167,11 @@ function clearRoute() {
   }
 }
 
-function renderStops(route) {
-  for (const [index, stop] of buildRouteStops(route.locationIds, [...points.values()], roads).entries()) {
+function renderStops(route, preferences) {
+  const routeRoads = route.roadSegments ?? roads;
+  const distanceField = preferences.accessibility === 100 ? 'accessibleMiles' : 'walkMiles';
+  const stops = buildRouteStops(route.locationIds, [...points.values()], routeRoads, distanceField);
+  for (const [index, stop] of stops.entries()) {
     const item = document.createElement('li');
     item.className = 'route-stop';
     const number = document.createElement('span');
@@ -177,9 +192,10 @@ function renderStops(route) {
 function showRoute(startId, endId) {
   const startName = points.get(startId).name;
   const endName = points.get(endId).name;
-  const route = shortestWalk([...points.values()], roads, startId, endId);
+  const preferences = readRoutePreferences(weightInputs);
+  const route = weightedWalk([...points.values()], roads, startId, endId, preferences);
   clearRoute();
-  const feedback = routeFeedback(route, startName, endName);
+  const feedback = routeFeedback(route, startName, endName, preferences);
   result.textContent = feedback.text;
   if (feedback.state === 'error') {
     result.dataset.state = 'error';
@@ -203,7 +219,7 @@ function showRoute(startId, endId) {
 
   markerById.get(startId).classList.add('route-start');
   markerById.get(endId).classList.add('route-end');
-  renderStops(route);
+  renderStops(route, preferences);
 }
 
 clearButton.addEventListener('click', () => {
@@ -230,6 +246,12 @@ for (const select of [startSelect, endSelect]) {
     result.textContent = 'Choose Find route to update the walk.';
   });
 }
+
+bindRoutePreferences(weightInputs, weightValues, () => {
+  if (startSelect.value && endSelect.value) {
+    showRoute(startSelect.value, endSelect.value);
+  }
+});
 
 async function loadCsv(file) {
   for (const path of [`../data/${file}`, `data/${file}`]) {
