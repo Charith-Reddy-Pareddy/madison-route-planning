@@ -1,5 +1,5 @@
 import { parseCsv } from './csv.mjs';
-import { weightedWalk } from './routing.mjs';
+import { createRoutePlanner } from './route-planner.mjs';
 import { buildRouteStops } from './route-stops.mjs';
 import {
   clearRouteControls,
@@ -39,6 +39,7 @@ const padding = 42;
 let points = new Map();
 let markerById = new Map();
 let roads = [];
+let routePlanner = null;
 
 function element(name, attributes = {}) {
   const node = document.createElementNS(svgNamespace, name);
@@ -108,6 +109,7 @@ function drawNetwork(locations, roadRows) {
 
   points = projectLocations([...locationsById.values()]);
   roads = roadRows;
+  routePlanner = createRoutePlanner([...points.values()], roads);
   const pairs = new Map();
   for (const road of roads) {
     const rawMiles = String(road.walkMiles ?? '').trim();
@@ -193,7 +195,7 @@ function showRoute(startId, endId) {
   const startName = points.get(startId).name;
   const endName = points.get(endId).name;
   const preferences = readRoutePreferences(weightInputs);
-  const route = weightedWalk([...points.values()], roads, startId, endId, preferences);
+  const route = routePlanner.findRoute(startId, endId, preferences);
   clearRoute();
   const feedback = routeFeedback(route, startName, endName, preferences);
   result.textContent = feedback.text;
